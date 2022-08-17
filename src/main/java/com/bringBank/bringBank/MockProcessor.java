@@ -38,36 +38,35 @@ public class MockProcessor implements Processor {
 
         if (parseLong(value) == 1118880000)  {
 
-            String successResponse = SuccessResponse().toString();
-            logger.info("Response sent: " + successResponse);
-            exchange.getOut().setBody(successResponse);
+            String AccountNumberSuccessResponse = SuccessResponse().toString();
+            logger.info("Response sent: " + AccountNumberSuccessResponse);
+            exchange.getOut().setBody(AccountNumberSuccessResponse);
 
         } else if (parseLong(value) == 1118880001) {
 
-            String successResponse1 = SuccessResponse1().toString();
-            logger.info("Response sent: " + successResponse1);
-            exchange.getOut().setBody(successResponse1);
+            String AccountNumberSuccessResponse1 = SuccessResponse1().toString();
+            logger.info("Response sent: " + AccountNumberSuccessResponse1);
+            exchange.getOut().setBody(AccountNumberSuccessResponse1);
 
         }
 
          else if (parseLong(value) == 1118880003) {
 
-            String successResponse2 = SuccessResponse2().toString();
-            logger.info("Response sent: " + successResponse2);
-            exchange.getOut().setBody(successResponse2);
+            String AccountNumberSuccessResponse2 = SuccessResponse2().toString();
+            logger.info("Response sent: " + AccountNumberSuccessResponse2);
+            exchange.getOut().setBody(AccountNumberSuccessResponse2);
 
          } else {
 
-            String failureResponse = FailureResponse().toString();
-            logger.info("Response sent: " + failureResponse);
-            exchange.getOut().setBody(failureResponse);
+            String AccountNumberFailureResponse = FailureResponse().toString();
+            logger.info("Response sent: " + AccountNumberFailureResponse);
+            exchange.getOut().setBody(AccountNumberFailureResponse);
 
         }
 
 
         String jsonString1 = jsonInput.toString();
         DocumentContext docCtx1 = JsonPath.parse(jsonString1);
-        //JsonPath jsonPath1 = JsonPath.compile("$.requestPayload.additionalData.companyCode");
         JsonPath jsonPath1 = JsonPath.compile("$.requestPayload.additionalData.companyCode");
         String value1=docCtx1.read(jsonPath1);
         System.out.println(value1);
@@ -236,7 +235,7 @@ public class MockProcessor implements Processor {
                 "}," +
                 "\"additionalData\": {" +
                 "\"companyCode\": \"RW0010009\"," +
-                "\"currency\": \"RWANDA RWS\"," +
+                "\"currency\": \"RWANDA RWF\"," +
                 "\"unclearedBalance\": \""+unclearedBalance+"\"," +
                 "\"accountBalance\": \""+balance+"\"," +
                 "\"limitAmount\": \""+limitAmount+"\"," +
