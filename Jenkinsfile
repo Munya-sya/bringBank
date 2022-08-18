@@ -33,14 +33,6 @@ pipeline {
    	sh "mvn --settings configuration/settings.xml k8s:push -Djkube.generator.name='kennedy02/bringbank'"
       }
     }
-    stage('Generate the Kubernetes resource manifests'){
-      when {
-        branch 'master'
-      }
-      steps{
-   	sh "mvn --settings configuration/settings.xml k8s:resource -Djkube.enricher.jkube-service.type='NodePort' -Djkube.generator.name='kennedy02/bringbank'"
-      }
-    }
     stage('Deploy t0 Kubernetes cluster'){
       when {
         branch 'master'
