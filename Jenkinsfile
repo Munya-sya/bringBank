@@ -46,7 +46,10 @@ pipeline {
         branch 'master'
       }
       steps{
-   	sh "mvn --settings configuration/settings.xml k8s:apply -Djkube.generator.name='kennedy02/bringbank'"
+   	withKubeConfig([credentialsId: 'kubeconfigs', serverUrl: 'https://192.168.56.120:6443']){
+	  sh 'kubectl config set-context --current --namespace=bringbank'
+	  sh 'mvn --settings configuration/settings.xml k8s:deploy -Pkubernetes -DskipTests -Djkube.generator.name="kennedy02/bringbank"'
+	}
       }
     }  
   }
