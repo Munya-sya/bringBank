@@ -159,6 +159,13 @@
 			<artifactId>kubernetes-assertions</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<!-- add the junit dependency here -->
+	        <dependency>
+		   <groupId>org.junit.jupiter</groupId>
+		   <artifactId>junit-jupiter-api</artifactId>
+		   <version>5.7.0</version>
+		   <scope>test</scope>
+	        </dependency>
 	</dependencies>
 
 	<build>
@@ -215,6 +222,12 @@
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+			  <groupId>org.eclipse.jkube</groupId>
+			  <artifactId>kubernetes-maven-plugin</artifactId> (4)
+			  <version>1.8.0</version>
+		        </plugin>
+		    </plugins>
 		</plugins>
 
 		<pluginManagement />
@@ -222,13 +235,13 @@
 
 	<profiles>
 		<profile>
-			<id>openshift</id>
+			<id>kubernetes</id>
 			<build>
 				<plugins>
 					<plugin>
-						<groupId>org.jboss.redhat-fuse</groupId>
-						<artifactId>fabric8-maven-plugin</artifactId>
-						<version>${fuse.bom.version}</version>
+						<groupId>org.eclipse.jkube</groupId>
+						<artifactId>kubernetes-maven-plugin</artifactId>
+						<version>1.8.0</version>
 						<executions>
 							<execution>
 								<goals>
