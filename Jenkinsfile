@@ -4,7 +4,7 @@ pipeline {
 	DOCKERHUB_CREDENTIALS=credentials('docker_hub_login')
 	tag = "${env.BUILD_NUMBER}"
 	  
-}
+    }
   stages {
     stage('Build') {
       steps{
@@ -19,7 +19,7 @@ pipeline {
       }
       steps {
         echo 'Building image'
-	def repo_name= "kennedy02/bringbank" 
+	    def repo_name= "kennedy02/bringbank" 
         withKubeConfig([credentialsId: 'kubeconfigs', serverUrl: 'https://192.168.56.120:6443']){
           sh "mvn --settings configuration/settings.xml k8s:build -Pkubernetes -DskipTests -Djkube.generator.name='${repo_name}:${env.tag}'"
         }
@@ -31,7 +31,7 @@ pipeline {
       }
       steps{
         sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-   	sh "mvn --settings configuration/settings.xml k8s:push -Djkube.generator.name='${repo_name}:${env.tag}'"
+   	    sh "mvn --settings configuration/settings.xml k8s:push -Djkube.generator.name='${repo_name}:${env.tag}'"
       }
     }
     stage('Deploy t0 Kubernetes cluster'){
@@ -39,11 +39,11 @@ pipeline {
         branch 'master'
       }
       steps{
-	 def repo_name= "kennedy02/bringbank" 
-   	withKubeConfig([credentialsId: 'kubeconfigs', serverUrl: 'https://192.168.56.120:6443']){
-	  sh 'kubectl config set-context --current --namespace=bringbank'
-	  sh "mvn --settings configuration/settings.xml k8s:deploy -Pkubernetes -DskipTests -Djkube.generator.name='${repo_name}:${env.tag}'"
-	}
+	    def repo_name= "kennedy02/bringbank" 
+   	    withKubeConfig([credentialsId: 'kubeconfigs', serverUrl: 'https://192.168.56.120:6443']){
+	     sh 'kubectl config set-context --current --namespace=bringbank'
+	     sh "mvn --settings configuration/settings.xml k8s:deploy -Pkubernetes -DskipTests -Djkube.generator.name='${repo_name}:${env.tag}'"
+	    }
       }
     }  
   }
