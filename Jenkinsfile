@@ -18,11 +18,15 @@ pipeline {
         branch 'master'
       }
       steps {
-        echo 'Building image'
-	    def repo_name= "kennedy02/bringbank" 
-        withKubeConfig([credentialsId: 'kubeconfigs', serverUrl: 'https://192.168.56.120:6443']){
-          sh "mvn --settings configuration/settings.xml k8s:build -Pkubernetes -DskipTests -Djkube.generator.name='${repo_name}:${env.tag}'"
-        }
+	script{  
+		echo 'Building image'
+
+		    def repo_name= "kennedy02/bringbank" 
+		withKubeConfig([credentialsId: 'kubeconfigs', serverUrl: 'https://192.168.56.120:6443']){
+		  sh "mvn --settings configuration/settings.xml k8s:build -Pkubernetes -DskipTests -Djkube.generator.name='${repo_name}:${env.tag}'"
+        
+	}
+	}
       }
     }
     stage('Push image to dockerhub'){
@@ -39,11 +43,13 @@ pipeline {
         branch 'master'
       }
       steps{
-	    def repo_name= "kennedy02/bringbank" 
-   	    withKubeConfig([credentialsId: 'kubeconfigs', serverUrl: 'https://192.168.56.120:6443']){
-	     sh 'kubectl config set-context --current --namespace=bringbank'
-	     sh "mvn --settings configuration/settings.xml k8s:deploy -Pkubernetes -DskipTests -Djkube.generator.name='${repo_name}:${env.tag}'"
+	      script{
+		    def repo_name= "kennedy02/bringbank" 
+		    withKubeConfig([credentialsId: 'kubeconfigs', serverUrl: 'https://192.168.56.120:6443']){
+		     sh 'kubectl config set-context --current --namespace=bringbank'
+		     sh "mvn --settings configuration/settings.xml k8s:deploy -Pkubernetes -DskipTests -Djkube.generator.name='${repo_name}:${env.tag}'"
 	    }
+	      }
       }
     }  
   }
