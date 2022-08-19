@@ -3,10 +3,8 @@ pipeline {
   environment {
 	DOCKERHUB_CREDENTIALS=credentials('docker_hub_login')
 	tag = "${env.BUILD_NUMBER}"
-   	reponame = "kennedy02/bringbank"
-	 DOCKER_IMAGE_NAME = "kennedy02/bringbank"
 	  
-	}
+}
   stages {
     stage('Build') {
       steps{
@@ -22,7 +20,7 @@ pipeline {
       steps {
         echo 'Building image'
         withKubeConfig([credentialsId: 'kubeconfigs', serverUrl: 'https://192.168.56.120:6443']){
-          sh "mvn --settings configuration/settings.xml k8s:build -Pkubernetes -DskipTests -Djkube.generator.name='${env.reponame}:${env.tag}'"
+          sh 'mvn --settings configuration/settings.xml k8s:build -Pkubernetes -DskipTests -Djkube.generator.name="kennedy02/bringbank"'
         }
       }
     }
@@ -35,29 +33,22 @@ pipeline {
    	sh "mvn --settings configuration/settings.xml k8s:push -Djkube.generator.name='kennedy02/bringbank'"
       }
     }
-	
     stage('Generate the Kubernetes resource manifests'){
       when {
         branch 'master'
       }
       steps{
-   	input 'Deploy to Production?'
-                milestone(1)
-                kubernetesDeploy(
-                    kubeconfigId: 'kubeconfig',
-                    configs: 'bringbank.yml',
-                    enableConfigSubstitution: true
-                )
+   	sh "mvn --settings configuration/settings.xml k8s:resource -Djkube.enricher.jkube-service.type='NodePort' -Djkube.generator.name='kennedy02/bringbank'"
       }
     }
-    stage('Deploy t0 Kubernetes cluster'){
+    stage('Deploy to Kubernetes cluster'){
       when {
         branch 'master'
       }
       steps{
    	withKubeConfig([credentialsId: 'kubeconfigs', serverUrl: 'https://192.168.56.120:6443']){
 	  sh 'kubectl config set-context --current --namespace=bringbank'
-	  sh "mvn --settings configuration/settings.xml k8s:deploy -Pkubernetes -DskipTests -Djkube.generator.name='${env.reponame}:${env.tag}'"
+	  sh 'mvn --settings configuration/settings.xml k8s:deploy -Pkubernetes -DskipTests -Djkube.generator.name="kennedy02/bringbank"'
 	}
       }
     }  
