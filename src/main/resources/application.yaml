@@ -30,7 +30,7 @@ logging:
 # spring boot management server instance properties
 management:
   server:
-    port: 8080
+    port: 8083
   security:
     enabled: false
   endpoints:
@@ -41,7 +41,7 @@ management:
 
 # spring boot server instance properties
 server:
-  port: 8080
+  port: 8083
 
 # app information
 info:
@@ -56,7 +56,7 @@ spring:
 
 # spring boot server instance properties
 server:
-  port: 8080
+  port: 8083
   undertow:
     worker-threads: 20
     io-threads: 1
@@ -67,7 +67,7 @@ spring:
 
 # spring boot server instance properties
 server:
-  port: 8080
+  port: 8083
   undertow:
     worker-threads: 10
     io-threads: 1
