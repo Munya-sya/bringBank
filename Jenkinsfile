@@ -3,9 +3,10 @@ pipeline {
   environment {
 	DOCKERHUB_CREDENTIALS=credentials('docker_hub_login')
 	tag = "${env.BUILD_NUMBER}"
-    reponame = "kennedy02/bringbank"
+   	reponame = "kennedy02/bringbank"
+	 DOCKER_IMAGE_NAME = "kennedy02/bringbank"
 	  
-}
+	}
   stages {
     stage('Build') {
       steps{
